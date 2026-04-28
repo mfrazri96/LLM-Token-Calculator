@@ -22,8 +22,13 @@ async function main(): Promise<void> {
     catalog.groups.some((group) => group.provider === "Anthropic"),
     "Expected the catalog to group Anthropic models."
   );
+  assert(catalog.groups.some((group) => group.provider === "NVIDIA"), "Expected the catalog to group NVIDIA models.");
   assert(modelIds.includes("gpt-5.4-pro"), "Expected GPT-5.4 pro in model options.");
   assert(modelIds.includes("claude-opus-4-6"), "Expected Claude Opus 4.6 in model options.");
+  assert(
+    modelIds.includes("nvidia-nemotron-3-super-120b-a12b"),
+    "Expected NVIDIA Nemotron 3 Super in model options."
+  );
   assert(!providers.has("Google"), "Expected Google presets to be excluded from model options.");
   assert(!providers.has("xAI"), "Expected xAI presets to be excluded from model options.");
 
@@ -45,6 +50,19 @@ async function main(): Promise<void> {
     "Expected the Claude output cost to match the preset."
   );
 
+  const nvidiaEstimateResponse = calculateTokenUsage({
+    text: "Estimate the NVIDIA prompt.",
+    modelId: "nvidia-nemotron-3-super-120b-a12b",
+    outputTokens: 1_000
+  });
+
+  assert(nvidiaEstimateResponse.ok, "Expected a successful NVIDIA token estimate.");
+  assert(nvidiaEstimateResponse.estimate.model.provider === "NVIDIA", "Expected the NVIDIA estimate to use NVIDIA.");
+  assert(
+    Math.abs(nvidiaEstimateResponse.estimate.cost.outputCost - 0.00075) < 1e-12,
+    "Expected the NVIDIA output cost to match the preset."
+  );
+
   const modelOptionsResponse = handleModelOptionsRequest(
     new Request("https://local.test/api/model-options", {
       method: "GET"
@@ -63,8 +81,16 @@ async function main(): Promise<void> {
     "Expected the model options API to include GPT-5.4 pro."
   );
   assert(
+    modelOptionsBody.models.some((model) => model.id === "nvidia-nemotron-3-super-120b-a12b"),
+    "Expected the model options API to include NVIDIA Nemotron 3 Super."
+  );
+  assert(
     modelOptionsBody.models.some((model) => model.label === "OpenAI - GPT-5.4 pro"),
     "Expected the model options API to include dropdown labels."
+  );
+  assert(
+    modelOptionsBody.models.some((model) => model.label === "NVIDIA - Nemotron 3 Super 120B A12B"),
+    "Expected the model options API to include NVIDIA dropdown labels."
   );
 
   console.log("backend smoke checks passed");

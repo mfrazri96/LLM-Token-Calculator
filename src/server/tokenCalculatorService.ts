@@ -9,8 +9,10 @@ const openAiStandardBillingNote =
   "Standard OpenAI text-token pricing only; excludes cached input, batch/flex/priority rates, regional processing, high-context surcharges, tools, images, and audio.";
 const claudeStandardBillingNote =
   "Standard Claude API global text-token pricing only; excludes prompt caching, batch discounts, data residency, fast mode, vision, and tool fees.";
+const nvidiaStandardBillingNote =
+  "Median NVIDIA Nemotron 3 Super text-token pricing across available API providers; provider rates and hosted context limits can vary.";
 
-const supportedPresetProviders = new Set(["OpenAI", "Anthropic"]);
+const supportedPresetProviders = new Set(["OpenAI", "Anthropic", "NVIDIA"]);
 
 const backendModelPresets: ModelPreset[] = [
   {
@@ -228,6 +230,15 @@ const backendModelPresets: ModelPreset[] = [
     outputPricePerMillion: 1.25,
     contextWindow: 200_000,
     note: claudeStandardBillingNote
+  },
+  {
+    id: "nvidia-nemotron-3-super-120b-a12b",
+    name: "Nemotron 3 Super 120B A12B",
+    provider: "NVIDIA",
+    inputPricePerMillion: 0.3,
+    outputPricePerMillion: 0.75,
+    contextWindow: 1_000_000,
+    note: nvidiaStandardBillingNote
   }
 ];
 

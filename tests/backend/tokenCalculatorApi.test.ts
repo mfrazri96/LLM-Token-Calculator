@@ -101,7 +101,12 @@ describe("token calculator API adapter", () => {
     expect(response.status).toBe(200);
     expect(body.ok).toBe(true);
     expect(body.defaultModelId).toBe("gpt-5.5");
-    expect(body.groups.map((group: { provider: string }) => group.provider)).toEqual(["OpenAI", "Anthropic", "Custom"]);
+    expect(body.groups.map((group: { provider: string }) => group.provider)).toEqual([
+      "OpenAI",
+      "Anthropic",
+      "NVIDIA",
+      "Custom"
+    ]);
     expect(body.models.length).toBeGreaterThanOrEqual(10);
     expect(body.models.map((model: { id: string }) => model.id)).toEqual(
       expect.arrayContaining([
@@ -112,11 +117,13 @@ describe("token calculator API adapter", () => {
         "claude-opus-4-6",
         "claude-sonnet-4-6",
         "claude-haiku-3-5",
+        "nvidia-nemotron-3-super-120b-a12b",
         "custom"
       ])
     );
     expect(providers.has("OpenAI")).toBe(true);
     expect(providers.has("Anthropic")).toBe(true);
+    expect(providers.has("NVIDIA")).toBe(true);
     expect(providers.has("Google")).toBe(false);
     expect(providers.has("xAI")).toBe(false);
     expect(providers.has("Custom")).toBe(true);
@@ -131,10 +138,14 @@ describe("token calculator API adapter", () => {
   it("exposes the calculator service through the API module", () => {
     const result = calculateTokenUsageForApi({
       text: "Small prompt",
+      modelId: "nvidia-nemotron-3-super-120b-a12b",
       outputTokens: 10
     });
 
     expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.estimate.model.provider).toBe("NVIDIA");
+    }
   });
 
   it("exposes the grouped model catalog through the API module", () => {

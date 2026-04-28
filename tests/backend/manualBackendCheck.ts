@@ -29,12 +29,16 @@ async function main(): Promise<void> {
   const providers = new Set(models.map((model) => model.provider));
 
   assert(catalog.defaultModelId === "gpt-5.5", "default model should be exposed for selector initialization");
-  assert(catalog.groups.map((group) => group.provider).join(",") === "OpenAI,Anthropic,Custom", "catalog groups should stay ordered");
+  assert(
+    catalog.groups.map((group) => group.provider).join(",") === "OpenAI,Anthropic,NVIDIA,Custom",
+    "catalog groups should stay ordered"
+  );
   assert(new Set(modelIds).size === modelIds.length, "model IDs should be unique");
   assert(modelIds.includes("gpt-5.5"), "OpenAI presets should include GPT-5.5");
   assert(modelIds.includes("gpt-5.4-pro"), "OpenAI presets should include GPT-5.4 pro");
   assert(modelIds.includes("claude-sonnet-4-6"), "Anthropic presets should include Claude Sonnet 4.6");
   assert(modelIds.includes("claude-opus-4-6"), "Anthropic presets should include Claude Opus 4.6");
+  assert(modelIds.includes("nvidia-nemotron-3-super-120b-a12b"), "NVIDIA presets should include Nemotron 3 Super");
   assert(!providers.has("Google"), "Google presets should not be exposed by backend options");
   assert(!providers.has("xAI"), "xAI presets should not be exposed by backend options");
 
@@ -60,6 +64,21 @@ async function main(): Promise<void> {
   );
   assert(claudeEstimate.model.provider === "Anthropic", "Claude provider should resolve to Anthropic");
   assert(claudeEstimate.context.contextWindow === 1_000_000, "Claude Opus 4.6 context window should match");
+
+  const nvidiaEstimate = unwrapEstimate(
+    calculateTokenUsage({
+      text: "Estimate the NVIDIA prompt.",
+      modelId: "nvidia-nemotron-3-super-120b-a12b",
+      outputTokens: 1_000
+    }),
+    "NVIDIA preset should calculate successfully"
+  );
+  assert(nvidiaEstimate.model.provider === "NVIDIA", "NVIDIA provider should resolve to NVIDIA");
+  assert(nvidiaEstimate.context.contextWindow === 1_000_000, "NVIDIA Nemotron 3 Super context window should match");
+  assert(
+    Math.abs(nvidiaEstimate.cost.outputCost - 0.00075) < 1e-12,
+    "NVIDIA Nemotron 3 Super output price should match"
+  );
 
   const rejectedEstimate = calculateTokenUsage({
     text: "Estimate the unsupported provider prompt.",

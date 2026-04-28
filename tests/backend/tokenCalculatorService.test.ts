@@ -33,7 +33,7 @@ function unwrapErrors(
 }
 
 describe("getModelOptions", () => {
-  it("lists expanded OpenAI and Claude pricing presets", () => {
+  it("lists expanded OpenAI, Claude, and NVIDIA pricing presets", () => {
     const models = getModelOptions();
 
     expect(models).toEqual(
@@ -114,6 +114,13 @@ describe("getModelOptions", () => {
           inputPricePerMillion: 0.8,
           outputPricePerMillion: 4,
           contextWindow: 200_000
+        }),
+        expect.objectContaining({
+          id: "nvidia-nemotron-3-super-120b-a12b",
+          provider: "NVIDIA",
+          inputPricePerMillion: 0.3,
+          outputPricePerMillion: 0.75,
+          contextWindow: 1_000_000
         })
       ])
     );
@@ -125,10 +132,10 @@ describe("getModelOptions", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("covers only OpenAI and Anthropic provider groups plus custom pricing", () => {
+  it("covers only supported provider groups plus custom pricing", () => {
     const providers = [...new Set(getModelOptions().map((model) => model.provider))].sort();
 
-    expect(providers).toEqual(["Anthropic", "Custom", "OpenAI"]);
+    expect(providers).toEqual(["Anthropic", "Custom", "NVIDIA", "OpenAI"]);
   });
 });
 
@@ -137,9 +144,10 @@ describe("getModelCatalog", () => {
     const catalog = getModelCatalog();
     const openAiGroup = catalog.groups.find((group) => group.provider === "OpenAI");
     const customOption = catalog.models.find((model) => model.id === "custom");
+    const nvidiaOption = catalog.models.find((model) => model.id === "nvidia-nemotron-3-super-120b-a12b");
 
     expect(catalog.defaultModelId).toBe("gpt-5.5");
-    expect(catalog.groups.map((group) => group.provider)).toEqual(["OpenAI", "Anthropic", "Custom"]);
+    expect(catalog.groups.map((group) => group.provider)).toEqual(["OpenAI", "Anthropic", "NVIDIA", "Custom"]);
     expect(openAiGroup?.models[0]).toEqual(
       expect.objectContaining({
         id: "gpt-5.5",
@@ -149,6 +157,14 @@ describe("getModelCatalog", () => {
       })
     );
     expect(openAiGroup?.models.every((model) => model.provider === "OpenAI")).toBe(true);
+    expect(nvidiaOption).toEqual(
+      expect.objectContaining({
+        id: "nvidia-nemotron-3-super-120b-a12b",
+        group: "NVIDIA",
+        label: "NVIDIA - Nemotron 3 Super 120B A12B",
+        detail: "1,000,000 context - $0.3/M input - $0.75/M output"
+      })
+    );
     expect(customOption).toEqual(
       expect.objectContaining({
         id: "custom",
@@ -288,7 +304,25 @@ describe("calculateTokenUsage", () => {
     expect(estimate.context.contextWindow).toBe(1_000_000);
   });
 
-  it("rejects non OpenAI or Claude provider presets from the shared catalog", () => {
+  it("calculates with the newly added NVIDIA preset", () => {
+    const estimate = unwrapEstimate(
+      calculateTokenUsage({
+        text: "Estimate the NVIDIA prompt.",
+        modelId: "nvidia-nemotron-3-super-120b-a12b",
+        outputTokens: 1_000
+      })
+    );
+
+    expect(estimate.model.id).toBe("nvidia-nemotron-3-super-120b-a12b");
+    expect(estimate.model.provider).toBe("NVIDIA");
+    expect(estimate.pricing.source).toBe("preset");
+    expect(estimate.pricing.inputPricePerMillion).toBe(0.3);
+    expect(estimate.pricing.outputPricePerMillion).toBe(0.75);
+    expect(estimate.cost.outputCost).toBeCloseTo(0.00075);
+    expect(estimate.context.contextWindow).toBe(1_000_000);
+  });
+
+  it("rejects unsupported provider presets from the shared catalog", () => {
     const errors = unwrapErrors(
       calculateTokenUsage({
         text: "Estimate an unsupported provider prompt.",
