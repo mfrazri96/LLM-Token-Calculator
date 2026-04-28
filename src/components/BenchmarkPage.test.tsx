@@ -11,7 +11,7 @@ describe("BenchmarkPage", () => {
 
     expect(aiBenchmarkModels).toHaveLength(15);
     expect(markup).toContain("Top 15 frontier model snapshot");
-    expect(markup).toContain(`datetime="${benchmarkMetadata.collectedAt}"`);
+    expect(markup).toContain(`dateTime="${benchmarkMetadata.collectedAt}"`);
     expect(markup).toContain("GPT-5.5 (xhigh)");
     expect(markup).toContain("Artificial Analysis Intelligence Index");
     expect(markup).toContain("Benchmark spread");
