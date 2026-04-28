@@ -25,7 +25,7 @@ function unwrapErrors(response: AiBenchmarkResponse): Extract<AiBenchmarkRespons
 }
 
 describe("getAiBenchmarkSnapshot", () => {
-  it("returns the collected top 15 AI benchmark models in rank order", () => {
+  it("returns the collected AI benchmark models in rank order", () => {
     const benchmark = unwrapBenchmark(getAiBenchmarkSnapshot());
 
     expect(benchmark.metadata).toEqual(
@@ -38,7 +38,9 @@ describe("getAiBenchmarkSnapshot", () => {
     expect(benchmark.updatedDateLabel).toBe("April 28, 2026");
     expect(benchmark.totalModels).toBe(AI_BENCHMARK_MODEL_LIMIT);
     expect(benchmark.models).toHaveLength(AI_BENCHMARK_MODEL_LIMIT);
-    expect(benchmark.models.map((model) => model.rank)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    expect(benchmark.models.map((model) => model.rank)).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+    ]);
     expect(benchmark.models[0]).toEqual(
       expect.objectContaining({
         id: "gpt-5-5-xhigh",
@@ -61,12 +63,24 @@ describe("getAiBenchmarkSnapshot", () => {
         rank: 15
       })
     );
+    expect(benchmark.models[15]).toEqual(
+      expect.objectContaining({
+        id: "nvidia-nemotron-3-super-120b-a12b",
+        rank: 16,
+        provider: "NVIDIA",
+        intelligenceScore: 36,
+        outputSpeedTokensPerSecond: 156.8,
+        blendedPriceUsdPerMillion: 0.4125
+      })
+    );
     expect(benchmark.models.some((model) => model.id === "glm-5-1")).toBe(false);
   });
 
   it("keeps model IDs unique and exposes provider filters", () => {
     const models = getAiBenchmarkModels();
     const ids = models.map((model) => model.id);
+    const metadata = getAiBenchmarkMetadata();
+    const strengthLabels = models.flatMap((model) => model.strengths);
 
     expect(new Set(ids).size).toBe(ids.length);
     expect(getAiBenchmarkProviders()).toEqual([
@@ -76,21 +90,25 @@ describe("getAiBenchmarkSnapshot", () => {
       "Google",
       "Kimi",
       "Meta",
+      "NVIDIA",
       "OpenAI",
       "Xiaomi"
     ]);
-    expect(getAiBenchmarkMetadata().rankingBasis).toContain("Top 15");
+    expect(metadata.rankingBasis).toContain("Top 16");
+    expect(metadata.rankingBasis).toContain("NVIDIA Nemotron");
+    expect(metadata.rankingBasis).not.toContain("Top 15");
+    expect(strengthLabels).toEqual(expect.arrayContaining(["Fastest output in top 16", "Top 16 intelligence"]));
+    expect(strengthLabels.some((strength) => strength.includes("Top 15") || strength.includes("top 15"))).toBe(false);
   });
 
   it("adds normalized scorecards and highlights for chart-ready comparisons", () => {
     const benchmark = unwrapBenchmark(getAiBenchmarkSnapshot());
-    const fastest = benchmark.models.find((model) => model.id === "kimi-k2-6");
-    const bestPrice = benchmark.models.find((model) => model.id === "mimo-v2-5-pro");
+    const nvidia = benchmark.models.find((model) => model.id === "nvidia-nemotron-3-super-120b-a12b");
     const largestContext = benchmark.models.find((model) => model.id === "gpt-5-4-xhigh");
 
     expect(benchmark.models[0].scorecard.intelligence).toBe(100);
-    expect(fastest?.scorecard.outputSpeed).toBe(100);
-    expect(bestPrice?.scorecard.priceEfficiency).toBe(100);
+    expect(nvidia?.scorecard.outputSpeed).toBe(100);
+    expect(nvidia?.scorecard.priceEfficiency).toBe(100);
     expect(largestContext?.scorecard.contextWindow).toBe(100);
     expect(benchmark.highlights).toEqual(
       expect.arrayContaining([
@@ -101,13 +119,13 @@ describe("getAiBenchmarkSnapshot", () => {
         }),
         expect.objectContaining({
           metric: "outputSpeed",
-          model: expect.objectContaining({ id: "kimi-k2-6" }),
-          value: "138.4 tok/s"
+          model: expect.objectContaining({ id: "nvidia-nemotron-3-super-120b-a12b" }),
+          value: "156.8 tok/s"
         }),
         expect.objectContaining({
           metric: "price",
-          model: expect.objectContaining({ id: "mimo-v2-5-pro" }),
-          value: "$1.5/M"
+          model: expect.objectContaining({ id: "nvidia-nemotron-3-super-120b-a12b" }),
+          value: "$0.41/M"
         })
       ])
     );
@@ -133,6 +151,30 @@ describe("getAiBenchmarkSnapshot", () => {
     );
   });
 
+  it("filters the added NVIDIA benchmark model independently", () => {
+    const benchmark = unwrapBenchmark(
+      getAiBenchmarkSnapshot({
+        provider: "NVIDIA"
+      })
+    );
+
+    expect(benchmark.selectedProvider).toBe("NVIDIA");
+    expect(benchmark.models).toHaveLength(1);
+    expect(benchmark.models[0]).toEqual(
+      expect.objectContaining({
+        id: "nvidia-nemotron-3-super-120b-a12b",
+        provider: "NVIDIA",
+        contextWindowTokens: 1_000_000
+      })
+    );
+    expect(benchmark.highlights.map((highlight) => highlight.metric)).toEqual([
+      "intelligence",
+      "outputSpeed",
+      "price",
+      "context"
+    ]);
+  });
+
   it("handles providers with unlisted speed and price metrics without failing", () => {
     const benchmark = unwrapBenchmark(
       getAiBenchmarkSnapshot({
@@ -151,7 +193,7 @@ describe("getAiBenchmarkSnapshot", () => {
     const errors = unwrapErrors(
       getAiBenchmarkSnapshot({
         provider: "Missing Lab",
-        limit: 16
+        limit: 17
       })
     );
 
@@ -162,7 +204,7 @@ describe("getAiBenchmarkSnapshot", () => {
       },
       {
         field: "limit",
-        message: "Limit must be between 1 and 15."
+        message: "Limit must be between 1 and 16."
       }
     ]);
   });

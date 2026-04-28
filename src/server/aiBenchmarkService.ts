@@ -1,6 +1,6 @@
 import type { AiBenchmarkModel, BenchmarkMetadata } from "../types";
 
-export const AI_BENCHMARK_MODEL_LIMIT = 15;
+export const AI_BENCHMARK_MODEL_LIMIT = 16;
 
 export type AiBenchmarkRequest = {
   provider?: unknown;
@@ -59,7 +59,7 @@ const benchmarkMetadata: BenchmarkMetadata = {
   sourceName: "Artificial Analysis Intelligence Index",
   sourceUrl: "https://artificialanalysis.ai/leaderboards/models/",
   rankingBasis:
-    "Top 15 current model entries by Artificial Analysis Intelligence Index; ranking values cross-checked against the Easy Benchmarks snapshot.",
+    "Top 16 current model entries by Artificial Analysis Intelligence Index, including NVIDIA Nemotron 3 Super 120B A12B; ranking values cross-checked against the Easy Benchmarks snapshot.",
   note:
     "Artificial Analysis speed metrics are live and based on recent measurements, so refresh this static snapshot before each release."
 };
@@ -154,7 +154,7 @@ const benchmarkModels: AiBenchmarkModel[] = [
     outputSpeedTokensPerSecond: 138.4,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["Fastest output in top 15", "Lower blended price", "Mid-size context"]
+    strengths: ["Fastest output in top 16", "Lower blended price", "Mid-size context"]
   },
   {
     id: "mimo-v2-5-pro",
@@ -167,7 +167,7 @@ const benchmarkModels: AiBenchmarkModel[] = [
     outputSpeedTokensPerSecond: 65.9,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["Lowest listed price in top 15", "Long context", "Strong value"]
+    strengths: ["Lowest listed price in top 16", "Long context", "Strong value"]
   },
   {
     id: "gpt-5-3-codex-xhigh",
@@ -206,7 +206,7 @@ const benchmarkModels: AiBenchmarkModel[] = [
     outputSpeedTokensPerSecond: null,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["Top 15 intelligence", "Mid-size context", "Emerging benchmark entry"]
+    strengths: ["Top 16 intelligence", "Mid-size context", "Emerging benchmark entry"]
   },
   {
     id: "claude-opus-4-7-non-reasoning-high",
@@ -232,7 +232,7 @@ const benchmarkModels: AiBenchmarkModel[] = [
     outputSpeedTokensPerSecond: 34.1,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["Strong value", "Preview frontier model", "Top 15 intelligence"]
+    strengths: ["Strong value", "Preview frontier model", "Top 16 intelligence"]
   },
   {
     id: "claude-sonnet-4-6-max",
@@ -258,7 +258,20 @@ const benchmarkModels: AiBenchmarkModel[] = [
     outputSpeedTokensPerSecond: 38.3,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["Strong value", "Long context", "Top 15 intelligence"]
+    strengths: ["Strong value", "Long context", "Top 16 intelligence"]
+  },
+  {
+    id: "nvidia-nemotron-3-super-120b-a12b",
+    rank: 16,
+    name: "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
+    provider: "NVIDIA",
+    contextWindowTokens: 1_000_000,
+    intelligenceScore: 36,
+    blendedPriceUsdPerMillion: 0.4125,
+    outputSpeedTokensPerSecond: 156.8,
+    latencySeconds: 1.05,
+    totalResponseSeconds: null,
+    strengths: ["NVIDIA open weights", "Fast output", "1M context"]
   }
 ];
 

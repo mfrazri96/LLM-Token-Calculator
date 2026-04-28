@@ -125,12 +125,13 @@ ensureIncludes(customMarkup, "Manual rates", "Custom pricing option should still
 
 const benchmarkMarkup = renderToStaticMarkup(<BenchmarkPage />);
 
-ensureEqual(aiBenchmarkModels.length, 15, "AI Benchmark must list exactly 15 model entries.");
+ensureEqual(aiBenchmarkModels.length, 16, "AI Benchmark must list exactly 16 model entries.");
 
 for (const expectedText of [
-  "Top 15 frontier model snapshot",
+  "Top 16 frontier model snapshot",
   "Benchmark metric",
   "GPT-5.5 (xhigh)",
+  "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
   "Context",
   "Artificial Analysis Intelligence Index"
 ]) {

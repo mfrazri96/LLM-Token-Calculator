@@ -6,13 +6,15 @@ import { BenchmarkPage } from "./BenchmarkPage";
 import { BenchmarkTable } from "./BenchmarkTable";
 
 describe("BenchmarkPage", () => {
-  it("renders the dated top-15 benchmark snapshot", () => {
+  it("renders the dated top-16 benchmark snapshot with NVIDIA visible", () => {
     const markup = renderToStaticMarkup(<BenchmarkPage />);
 
-    expect(aiBenchmarkModels).toHaveLength(15);
-    expect(markup).toContain("Top 15 frontier model snapshot");
+    expect(aiBenchmarkModels).toHaveLength(16);
+    expect(markup).toContain("Top 16 frontier model snapshot");
     expect(markup).toContain(`dateTime="${benchmarkMetadata.collectedAt}"`);
     expect(markup).toContain("GPT-5.5 (xhigh)");
+    expect(markup).toContain("NVIDIA Nemotron 3 Super 120B A12B (Reasoning)");
+    expect(markup).toContain("NVIDIA");
     expect(markup).toContain("Artificial Analysis Intelligence Index");
     expect(markup).toContain("Benchmark spread");
     expect(markup).toContain("Benchmark metric");

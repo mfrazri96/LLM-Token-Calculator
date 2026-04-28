@@ -160,7 +160,7 @@ export default function App() {
           <p className="hero-deck">
             {isCalculatorView
               ? "Paste a prompt, choose one model, adjust assumptions, and review the live estimate."
-              : "Compare the current top 15 model entries by intelligence, speed, price, latency, and context."}
+              : "Compare the current top 16 model entries by intelligence, speed, price, latency, and context."}
           </p>
           <div className="hero-status" aria-live="polite">
             <span

@@ -23,7 +23,7 @@ export function BenchmarkPage() {
         <div className="panel-header">
           <div>
             <p className="panel-chip">AI Benchmark</p>
-            <h2 id="benchmark-overview-title">Top 15 frontier model snapshot</h2>
+            <h2 id="benchmark-overview-title">Top 16 frontier model snapshot</h2>
             <p>
               Updated{" "}
               <time dateTime={benchmarkMetadata.collectedAt}>{benchmarkMetadata.collectedAt}</time> from{" "}

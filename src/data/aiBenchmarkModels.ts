@@ -2,11 +2,12 @@ import type { AiBenchmarkModel, BenchmarkMetadata } from "../types";
 
 export const benchmarkMetadata: BenchmarkMetadata = {
   collectedAt: "2026-04-28",
-  sourceName: "Artificial Analysis LLM Leaderboard",
+  sourceName: "Artificial Analysis Intelligence Index",
   sourceUrl: "https://artificialanalysis.ai/leaderboards/models/",
-  rankingBasis: "Top 15 current model entries by Artificial Analysis Intelligence Index.",
+  rankingBasis:
+    "Top 16 current model entries by Artificial Analysis Intelligence Index, including NVIDIA Nemotron 3 Super 120B A12B; ranking values cross-checked against the Easy Benchmarks snapshot.",
   note:
-    "Live speed, latency, and price metrics can change; refresh this static snapshot before each release."
+    "Artificial Analysis speed metrics are live and based on recent measurements, so refresh this static snapshot before each release."
 };
 
 export const aiBenchmarkModels: AiBenchmarkModel[] = [
@@ -16,12 +17,12 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "GPT-5.5 (xhigh)",
     provider: "OpenAI",
     contextWindowTokens: 922_000,
-    intelligenceScore: 60,
+    intelligenceScore: 60.2,
     blendedPriceUsdPerMillion: 11.25,
-    outputSpeedTokensPerSecond: 71,
-    latencySeconds: 69.95,
-    totalResponseSeconds: 77.04,
-    strengths: ["Highest intelligence score", "Large context", "Reasoning-heavy work"]
+    outputSpeedTokensPerSecond: 84.2,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Current intelligence leader", "Large context", "Reasoning-heavy work"]
   },
   {
     id: "gpt-5-5-high",
@@ -29,24 +30,24 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "GPT-5.5 (high)",
     provider: "OpenAI",
     contextWindowTokens: 922_000,
-    intelligenceScore: 59,
+    intelligenceScore: 58.9,
     blendedPriceUsdPerMillion: 11.25,
-    outputSpeedTokensPerSecond: 69,
-    latencySeconds: 24.78,
-    totalResponseSeconds: 32.06,
-    strengths: ["Top-tier reasoning", "Large context", "Balanced latency"]
+    outputSpeedTokensPerSecond: 75.9,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Top-tier reasoning", "Large context", "Balanced frontier option"]
   },
   {
     id: "claude-opus-4-7-max",
     rank: 3,
-    name: "Claude Opus 4.7 (max)",
+    name: "Claude Opus 4.7 (Adaptive Reasoning, Max Effort)",
     provider: "Anthropic",
     contextWindowTokens: 1_000_000,
-    intelligenceScore: 57,
+    intelligenceScore: 57.3,
     blendedPriceUsdPerMillion: 10,
-    outputSpeedTokensPerSecond: 45,
-    latencySeconds: 18.54,
-    totalResponseSeconds: 29.7,
+    outputSpeedTokensPerSecond: 59.1,
+    latencySeconds: null,
+    totalResponseSeconds: null,
     strengths: ["Long context", "Complex knowledge work", "Premium reasoning"]
   },
   {
@@ -55,12 +56,12 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "Gemini 3.1 Pro Preview",
     provider: "Google",
     contextWindowTokens: 1_000_000,
-    intelligenceScore: 57,
+    intelligenceScore: 57.2,
     blendedPriceUsdPerMillion: 4.5,
-    outputSpeedTokensPerSecond: 112,
-    latencySeconds: 21.15,
-    totalResponseSeconds: 25.62,
-    strengths: ["High speed", "Strong value", "Long context"]
+    outputSpeedTokensPerSecond: 132.1,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["High output speed", "Strong value", "Long context"]
   },
   {
     id: "gpt-5-4-xhigh",
@@ -68,11 +69,11 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "GPT-5.4 (xhigh)",
     provider: "OpenAI",
     contextWindowTokens: 1_050_000,
-    intelligenceScore: 57,
+    intelligenceScore: 56.8,
     blendedPriceUsdPerMillion: 5.63,
-    outputSpeedTokensPerSecond: 77,
-    latencySeconds: 166.01,
-    totalResponseSeconds: 172.48,
+    outputSpeedTokensPerSecond: 85.3,
+    latencySeconds: null,
+    totalResponseSeconds: null,
     strengths: ["High intelligence", "Largest context in top five", "Reasoning-heavy work"]
   },
   {
@@ -81,12 +82,12 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "GPT-5.5 (medium)",
     provider: "OpenAI",
     contextWindowTokens: 922_000,
-    intelligenceScore: 57,
+    intelligenceScore: 56.7,
     blendedPriceUsdPerMillion: 11.25,
-    outputSpeedTokensPerSecond: 66,
-    latencySeconds: 3.81,
-    totalResponseSeconds: 11.41,
-    strengths: ["Low latency", "Top intelligence tier", "Interactive workflows"]
+    outputSpeedTokensPerSecond: 80.4,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Top intelligence tier", "Interactive workflows", "Lower effort variant"]
   },
   {
     id: "kimi-k2-6",
@@ -94,12 +95,12 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "Kimi K2.6",
     provider: "Kimi",
     contextWindowTokens: 256_000,
-    intelligenceScore: 54,
+    intelligenceScore: 53.9,
     blendedPriceUsdPerMillion: 1.71,
-    outputSpeedTokensPerSecond: null,
+    outputSpeedTokensPerSecond: 138.4,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["High intelligence", "Lower blended price", "Mid-size context"]
+    strengths: ["Fastest output in top 16", "Lower blended price", "Mid-size context"]
   },
   {
     id: "mimo-v2-5-pro",
@@ -107,12 +108,12 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "MiMo-V2.5-Pro",
     provider: "Xiaomi",
     contextWindowTokens: 1_000_000,
-    intelligenceScore: 54,
+    intelligenceScore: 53.8,
     blendedPriceUsdPerMillion: 1.5,
-    outputSpeedTokensPerSecond: 62,
-    latencySeconds: 2.58,
-    totalResponseSeconds: 43.11,
-    strengths: ["Strong value", "Long context", "Low latency"]
+    outputSpeedTokensPerSecond: 65.9,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Lowest listed price in top 16", "Long context", "Strong value"]
   },
   {
     id: "gpt-5-3-codex-xhigh",
@@ -120,89 +121,102 @@ export const aiBenchmarkModels: AiBenchmarkModel[] = [
     name: "GPT-5.3 Codex (xhigh)",
     provider: "OpenAI",
     contextWindowTokens: 400_000,
-    intelligenceScore: 54,
+    intelligenceScore: 53.6,
     blendedPriceUsdPerMillion: 4.81,
-    outputSpeedTokensPerSecond: 73,
-    latencySeconds: 76.41,
-    totalResponseSeconds: 83.25,
-    strengths: ["Coding focus", "Solid speed", "High intelligence"]
+    outputSpeedTokensPerSecond: 89.4,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Coding focus", "Solid output speed", "High intelligence"]
+  },
+  {
+    id: "claude-opus-4-6-max",
+    rank: 10,
+    name: "Claude Opus 4.6 (Adaptive Reasoning, Max Effort)",
+    provider: "Anthropic",
+    contextWindowTokens: 1_000_000,
+    intelligenceScore: 53,
+    blendedPriceUsdPerMillion: 10,
+    outputSpeedTokensPerSecond: 53.7,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Long context", "Premium reasoning", "Strong knowledge work"]
   },
   {
     id: "muse-spark",
-    rank: 10,
+    rank: 11,
     name: "Muse Spark",
     provider: "Meta",
     contextWindowTokens: 262_000,
-    intelligenceScore: 52,
+    intelligenceScore: 52.1,
     blendedPriceUsdPerMillion: null,
     outputSpeedTokensPerSecond: null,
     latencySeconds: null,
     totalResponseSeconds: null,
-    strengths: ["Top 10 intelligence", "Mid-size context", "Emerging benchmark entry"]
+    strengths: ["Top 16 intelligence", "Mid-size context", "Emerging benchmark entry"]
   },
   {
     id: "claude-opus-4-7-non-reasoning-high",
-    rank: 11,
-    name: "Claude Opus 4.7 (Non-reasoning, high)",
+    rank: 12,
+    name: "Claude Opus 4.7 (Non-reasoning, High Effort)",
     provider: "Anthropic",
     contextWindowTokens: 1_000_000,
-    intelligenceScore: 52,
+    intelligenceScore: 51.8,
     blendedPriceUsdPerMillion: 10,
-    outputSpeedTokensPerSecond: 39,
-    latencySeconds: 1.4,
-    totalResponseSeconds: 14.17,
-    strengths: ["Lowest latency in top 15", "Long context", "Premium quality"]
+    outputSpeedTokensPerSecond: 51.1,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Long context", "Premium quality", "Non-reasoning variant"]
   },
   {
     id: "qwen3-6-max-preview",
-    rank: 12,
+    rank: 13,
     name: "Qwen3.6 Max Preview",
     provider: "Alibaba",
     contextWindowTokens: 256_000,
-    intelligenceScore: 52,
-    blendedPriceUsdPerMillion: 2.92,
-    outputSpeedTokensPerSecond: 33,
-    latencySeconds: 3.62,
-    totalResponseSeconds: 78.68,
-    strengths: ["Strong value", "Preview frontier model", "Low latency"]
+    intelligenceScore: 51.8,
+    blendedPriceUsdPerMillion: 2.93,
+    outputSpeedTokensPerSecond: 34.1,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Strong value", "Preview frontier model", "Top 16 intelligence"]
   },
   {
     id: "claude-sonnet-4-6-max",
-    rank: 13,
-    name: "Claude Sonnet 4.6 (max)",
+    rank: 14,
+    name: "Claude Sonnet 4.6 (Adaptive Reasoning, Max Effort)",
     provider: "Anthropic",
     contextWindowTokens: 1_000_000,
-    intelligenceScore: 52,
+    intelligenceScore: 51.7,
     blendedPriceUsdPerMillion: 6,
-    outputSpeedTokensPerSecond: 57,
-    latencySeconds: 124.99,
-    totalResponseSeconds: 133.8,
+    outputSpeedTokensPerSecond: 68.6,
+    latencySeconds: null,
+    totalResponseSeconds: null,
     strengths: ["Long context", "Balanced intelligence", "Enterprise workflows"]
   },
   {
     id: "deepseek-v4-pro-max",
-    rank: 14,
-    name: "DeepSeek V4 Pro (Max)",
+    rank: 15,
+    name: "DeepSeek V4 Pro (Reasoning, Max Effort)",
     provider: "DeepSeek",
     contextWindowTokens: 1_000_000,
-    intelligenceScore: 52,
-    blendedPriceUsdPerMillion: 2.17,
-    outputSpeedTokensPerSecond: 38,
-    latencySeconds: 2.02,
-    totalResponseSeconds: 131.19,
-    strengths: ["Strong value", "Long context", "Low first-token latency"]
+    intelligenceScore: 51.5,
+    blendedPriceUsdPerMillion: 2.18,
+    outputSpeedTokensPerSecond: 38.3,
+    latencySeconds: null,
+    totalResponseSeconds: null,
+    strengths: ["Strong value", "Long context", "Top 16 intelligence"]
   },
   {
-    id: "glm-5-1",
-    rank: 15,
-    name: "GLM-5.1",
-    provider: "Z AI",
-    contextWindowTokens: 200_000,
-    intelligenceScore: 51,
-    blendedPriceUsdPerMillion: 2.15,
-    outputSpeedTokensPerSecond: 50,
-    latencySeconds: 1.42,
-    totalResponseSeconds: 87.44,
-    strengths: ["Low latency", "Strong value", "Efficient top-15 entry"]
+    id: "nvidia-nemotron-3-super-120b-a12b",
+    rank: 16,
+    name: "NVIDIA Nemotron 3 Super 120B A12B (Reasoning)",
+    provider: "NVIDIA",
+    contextWindowTokens: 1_000_000,
+    intelligenceScore: 36,
+    blendedPriceUsdPerMillion: 0.4125,
+    outputSpeedTokensPerSecond: 156.8,
+    latencySeconds: 1.05,
+    totalResponseSeconds: null,
+    strengths: ["NVIDIA open weights", "Fast output", "1M context"]
   }
 ];

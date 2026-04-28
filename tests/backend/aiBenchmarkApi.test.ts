@@ -20,7 +20,7 @@ describe("AI benchmark API adapter", () => {
     expect(body.ok).toBe(true);
     expect(body.metadata.collectedAt).toBe("2026-04-28");
     expect(body.updatedDateLabel).toBe("April 28, 2026");
-    expect(body.models).toHaveLength(15);
+    expect(body.models).toHaveLength(16);
     expect(body.models[0]).toEqual(
       expect.objectContaining({
         id: "gpt-5-5-xhigh",
@@ -35,6 +35,10 @@ describe("AI benchmark API adapter", () => {
         expect.objectContaining({
           metric: "intelligence",
           model: expect.objectContaining({ id: "gpt-5-5-xhigh" })
+        }),
+        expect.objectContaining({
+          metric: "outputSpeed",
+          model: expect.objectContaining({ id: "nvidia-nemotron-3-super-120b-a12b" })
         })
       ])
     );
@@ -74,7 +78,7 @@ describe("AI benchmark API adapter", () => {
       },
       {
         field: "limit",
-        message: "Limit must be between 1 and 15."
+        message: "Limit must be between 1 and 16."
       }
     ]);
   });
@@ -107,5 +111,6 @@ describe("AI benchmark API adapter", () => {
     }
     expect(getAiBenchmarkMetadata().sourceUrl).toBe("https://artificialanalysis.ai/leaderboards/models/");
     expect(getAiBenchmarkProviders()).toContain("OpenAI");
+    expect(getAiBenchmarkProviders()).toContain("NVIDIA");
   });
 });

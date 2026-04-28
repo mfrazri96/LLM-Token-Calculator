@@ -9,13 +9,22 @@ import {
 } from "./benchmarkMetrics";
 
 describe("benchmarkMetrics", () => {
-  it("keeps a ranked top-15 benchmark dataset", () => {
+  it("keeps a ranked top-16 benchmark dataset", () => {
     const rankedModels = getRankedBenchmarkModels(aiBenchmarkModels);
 
-    expect(rankedModels).toHaveLength(15);
+    expect(rankedModels).toHaveLength(16);
     expect(rankedModels[0].rank).toBe(1);
-    expect(rankedModels[14].rank).toBe(15);
-    expect(new Set(rankedModels.map((model) => model.id)).size).toBe(15);
+    expect(rankedModels[15].rank).toBe(16);
+    expect(rankedModels[15].provider).toBe("NVIDIA");
+    expect(new Set(rankedModels.map((model) => model.id)).size).toBe(16);
+  });
+
+  it("filters NVIDIA into the visible benchmark list", () => {
+    const nvidiaModels = filterBenchmarkModels(aiBenchmarkModels, "NVIDIA");
+
+    expect(nvidiaModels.map((model) => model.id)).toEqual([
+      "nvidia-nemotron-3-super-120b-a12b"
+    ]);
   });
 
   it("filters models by provider without changing benchmark rank order", () => {
@@ -37,7 +46,7 @@ describe("benchmarkMetrics", () => {
   });
 
   it("normalises lower prices as stronger price value", () => {
-    const cheapest = aiBenchmarkModels.find((model) => model.id === "mimo-v2-5-pro");
+    const cheapest = aiBenchmarkModels.find((model) => model.id === "nvidia-nemotron-3-super-120b-a12b");
     const priciest = aiBenchmarkModels.find((model) => model.id === "gpt-5-5-xhigh");
 
     expect(cheapest).toBeDefined();
